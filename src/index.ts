@@ -23,7 +23,17 @@ let cycleCount = 0;
 
 function execCycle() {
     let asm = assembler.assembledCode[cpu.regPC];
-    message(`PC: ${cpu.regPC.toString(16).padStart(4, "0")} A: ${cpu.regA.toString(16).padStart(2, "0")} X: ${cpu.regX.toString(16).padStart(2, "0")} Y: ${cpu.regY.toString(16).padStart(2, "0")} SP: ${cpu.regSP.toString(16).padStart(2, "0")} ${asm.lineno.toString().padStart(4)} @ ${asm.code}`, `Cycle ${cycleCount.toString().padStart(4, "0")}`);
+    let statusReg = "";
+    statusReg += (cpu.regP & 0b10000000) ? "N" : "."; // negative
+    statusReg += (cpu.regP & 0b01000000) ? "V" : "."; // overflow
+    statusReg += "."; // bit 5
+    statusReg += (cpu.regP & 0b00010000) ? "B" : "."; // break
+    statusReg += (cpu.regP & 0b00001000) ? "D" : "."; // decimal
+    statusReg += (cpu.regP & 0b00000100) ? "I" : "."; // interrupt
+    statusReg += (cpu.regP & 0b00000010) ? "Z" : "."; // zero
+    statusReg += (cpu.regP & 0b00000001) ? "C" : "."; // carry
+
+    message(`${statusReg} PC: ${cpu.regPC.toString(16).padStart(4, "0")} A: ${cpu.regA.toString(16).padStart(2, "0")} X: ${cpu.regX.toString(16).padStart(2, "0")} Y: ${cpu.regY.toString(16).padStart(2, "0")} SP: ${cpu.regSP.toString(16).padStart(2, "0")} ${asm.lineno.toString().padStart(4)} @ ${asm.code}`, `Cycle ${cycleCount.toString().padStart(4, "0")}`);
     cycleCount++;
     cpu.execute();
 }

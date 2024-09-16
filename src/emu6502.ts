@@ -8,7 +8,7 @@ export class Emu6502 {
     public regA = 0;
     public regX = 0;
     public regY = 0;
-    private regP = 0;
+    public regP = 0;
     public regPC = 0x600;
     public regSP = 0xff;
 

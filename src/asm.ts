@@ -107,7 +107,7 @@ export class Assembler {
             }
             // remove \r and \n, front spaces
             let trimmedLine = lines[i].replace(/^\s+/, "").replace(/\s+$/, "").replace(/\r/, "").replace(/\n/, "");
-            this.assembledCode[this.defaultCodePC] = { code: trimmedLine, lineno: i };
+            this.assembledCode[this.defaultCodePC] = { code: trimmedLine, lineno: i + 1 };
             if (!this.assembleLine(lines[i])) {
                 this.codeAssembledOK = false;
                 break;
