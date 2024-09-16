@@ -13,9 +13,11 @@ export class Emu6502 {
     public regSP = 0xff;
 
     private memory: Memory;
+    private resetVec: number;
 
-    constructor(memory: Memory) {
+    constructor(memory: Memory, resetVec: number) {
         this.memory = memory;
+        this.resetVec = resetVec;
     }
 
     //set zero and negative processor flags based on result
@@ -1263,13 +1265,12 @@ export class Emu6502 {
     }
 
     // reset() - Reset CPU and memory.
+    // remember to reset peripherals if needed
     public reset() {
-        for (var i = 0; i < 0x600; i++) { // clear ZP, stack and screen
-            this.memory.set(i, 0x00);
-        }
         this.regA = this.regX = this.regY = 0;
-        this.regPC = 0x600;
+        this.regPC = this.memory.getWord(0xfffc);
         this.regSP = 0xff;
         this.regP = 0x30;
+        message("CPU reset @ " + addr2hex(this.regPC), "reset()");
     }
 }
